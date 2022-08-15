@@ -42,3 +42,80 @@ module.exports = {
 
 > npx sequelize-cli model:create --name tiposEvidencia --attributes descri:string,ativo:boolean,dh:date
 
+### Gravando no banco
+
+> npx sequelize-cli db:migrate
+
+### POpulando
+
+> npx sequelize-cli seed:generate --name demo-tiposEvidencia
+
+#### Mudo o arquivo
+'use strict';
+
+module.exports = {
+  async up (queryInterface, Sequelize) {
+await queryInterface.bulkInsert('tiposEvidencias', [
+  {
+    descri: 'Computador de mesa',
+    ativo: false,
+    createdAt:new Date(),
+    updatedAt:new Date()
+  },
+  {
+    descri: 'Notebook',
+    ativo: false,
+    createdAt:new Date(),
+    updatedAt:new Date()
+  },
+  {
+    descri: 'HD Hard Disk',
+    ativo: false,
+    createdAt:new Date(),
+    updatedAt:new Date()
+  },
+  {
+    descri: 'PenDrive',
+    ativo: false,
+    createdAt:new Date(),
+    updatedAt:new Date()
+  }
+  ], {});
+  },
+
+  async down (queryInterface, Sequelize) {
+     await queryInterface.bulkDelete('tiposEvidencia', null, {});
+  }
+};
+
+### Rodando a seed
+
+> npx sequelize-cli db:seed:all
+
+### DESFAZER
+
+npx sequelize-cli db:migrate:undo
+npx sequelize db:seed:undo
+npx sequelize-cli db:seed:undo --seed 20220815025055-demo-tiposEvidencia
+npx sequelize-cli db:seed:undo:all
+
+
+'use strict';
+const {
+  Model
+} = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+  class tiposProcedimento extends Model {
+    static associate(models) {
+      // define association here
+    }
+  }
+  tiposProcedimento.init({
+    descri: DataTypes.STRING,
+    ativo: DataTypes.BOOLEAN
+  }, {
+    sequelize,
+    modelName: 'tiposProcedimento',
+  });
+  return tiposProcedimento;
+};
